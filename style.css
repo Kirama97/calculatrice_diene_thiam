@@ -7,40 +7,40 @@
 body{
     min-height: 100vh;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
-    font-family: 'Roboto', sans-serif;
-    background-image: linear-gradient(to top, #fbc2eb 0%, #a6c1ee 100%);
+    font-family: 'Roboto', 'Helvetica Neue', sans-serif;
+    background-color: #f0f0f5; /* Fond clair pour faire ressortir le design sombre */
     padding: 20px;
 }
 
 .calculatrice {
-    background-color: rgb(48, 63, 63);
+    background-color: #161719;
     display: flex;
     flex-direction: column;
-    user-select: none;
-    padding: 15px;
-    border-radius: 5px;
-    box-shadow: 0 5px black;
+    padding: 20px;
+    border-radius: 20px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.3);
     
-    /* Responsiveness */
     width: 100%;
-    max-width: 350px;
+    max-width: 320px; /* Retour à la taille parfaite du widget */
+    user-select: none;
 }
 
 .ecran{
     width: 100%;
-    height: 100px;
-    margin-bottom: 10px;
-    border-radius: 5px;
-    background-color: rgb(182, 149, 106);
+    height: 90px;
+    margin-bottom: 20px;
+    border-radius: 12px;
+    background-color: #25262A;
     display: flex;
-    justify-content:flex-end ;
-    align-items: flex-end;
-    padding : 10px;
-    font-size: 25px;
-    
-    /* Overflow management */
+    justify-content: flex-end;
+    align-items: center;
+    padding: 0 20px;
+    font-size: 42px;
+    font-weight: 400;
+    color: white;
     word-break: break-all;
     overflow-y: auto;
 }
@@ -48,51 +48,67 @@ body{
 .touche {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    grid-auto-rows: 60px;
-    gap: 7px;
+    grid-auto-rows: 65px; /* Fixe la hauteur des lignes pour garder les proportions du design */
+    gap: 12px;
 }
 
 .touche button {
     border: none;
     outline: none;
-    border-radius: 5px;
-    background-color: white;
-    box-shadow: 0 3px #a6c1ee;
-    font-size: 18px;
+    border-radius: 12px;
+    font-size: 24px;
+    font-weight: 500;
+    color: white;
     cursor: pointer;
-    /* Effet bouncing au relâchement (cubic-bezier elastic effect) */
-    transition: background-color 0.2s, transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     touch-action: manipulation;
-}
-
-.touche button:hover {
-    background-color: #f1f1f1;
+    
+    /* Effet bouncing au relâchement */
+    transition: background-color 0.2s, transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 button:active {
-    box-shadow: 0 1px #a8a8a8;
     /* L'élément s'enfonce et se réduit légèrement (scale) */
-    transform: translateY(3px) scale(0.92);
+    transform: scale(0.92);
     /* Descente rapide et franche quand on appuie */
-    transition: transform 0.05s ease-out, box-shadow 0.05s ease-out;
+    transition: transform 0.05s ease-out;
 }
 
-#egale {
+/* Couleurs correspondant au design */
+.bouton.dark {
+    background-color: #2E2F33;
+}
+
+.bouton.dark:hover {
+    background-color: #3E3F44;
+}
+
+.bouton.orange {
+    background-color: #FF9500;
+}
+
+.bouton.orange:hover {
+    background-color: #ffaa33;
+}
+
+.bouton.green {
+    background-color: #34C759;
+}
+
+.bouton.green:hover {
+    background-color: #4dd56e;
+}
+
+.span-2 {
     grid-column: span 2;
-    background-color: #e0bc1b;
-    font-size: 30px;
-    color: white;
 }
 
-#egale:hover {
-    background-color: #d1b017;
+.footer {
+    margin-top: 25px;
+    color: #888;
+    font-size: 14px;
+    letter-spacing: 0.5px;
 }
 
-#sup {
-    background-color: rgba(0, 128, 0, 0.74);
-    color: white;
-}
-
-#sup:hover {
-    background-color: rgba(0, 100, 0, 0.74);
+.footer strong {
+    color: #555;
 }

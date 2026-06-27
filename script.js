@@ -11,8 +11,10 @@ function ecouterClavier(e) {
     // Normaliser certaines touches
     if (valeurSaisi === '=' || valeurSaisi === 'Enter') {
         valeurSaisi = 'Enter';
-    } else if (valeurSaisi === 'Escape' || valeurSaisi === 'Backspace' || valeurSaisi.toLowerCase() === 'c') {
+    } else if (valeurSaisi === 'Escape' || valeurSaisi.toLowerCase() === 'c') {
         valeurSaisi = 'c';
+    } else if (valeurSaisi === 'Delete') {
+        valeurSaisi = 'Backspace';
     }
 
     calculer(valeurSaisi);
@@ -36,6 +38,25 @@ function calculer(valeurSaisi) {
             case 'c':
                 ecran.textContent = "0";
                 break;
+            case 'Backspace':
+                // DEL key logic: delete last character
+                if (ecran.textContent.length > 1 && ecran.textContent !== "Erreur") {
+                    ecran.textContent = ecran.textContent.slice(0, -1);
+                } else {
+                    ecran.textContent = "0";
+                }
+                break;
+            case '%':
+                // % key logic: eval and divide by 100
+                try {
+                    const calcul = eval(ecran.textContent);
+                    if (!Number.isNaN(calcul)) {
+                        ecran.textContent = (calcul / 100).toString();
+                    }
+                } catch(e) {
+                    ecran.textContent = "Erreur";
+                }
+                break;
             case 'Enter':
                 try {
                     // Évaluation sécurisée via bloc try/catch pour éviter les crash
@@ -54,7 +75,11 @@ function calculer(valeurSaisi) {
             default:
                 // Si l'écran affiche 0 (au début) ou une Erreur, on remplace le contenu. Sinon on concatène.
                 if (ecran.textContent === "0" || ecran.textContent === "Erreur") {
-                    ecran.textContent = valeurSaisi;
+                    if (valeurSaisi === '.') {
+                        ecran.textContent = "0.";
+                    } else {
+                        ecran.textContent = valeurSaisi;
+                    }
                 } else {
                     ecran.textContent += valeurSaisi;
                 }
