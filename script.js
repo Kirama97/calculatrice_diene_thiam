@@ -1,52 +1,63 @@
 const touches = [...document.querySelectorAll('.bouton')];
-const listeClecode = touches.map (touche => touche.dataset.key );
+const listeClecode = touches.map(touche => touche.dataset.key);
 const ecran = document.querySelector(".ecran");
 
 // 1 attendre le click de l'utilisateur (clavier);
-
 document.addEventListener('keydown', ecouterClavier);
 
-  function ecouterClavier(e) {
-     const valeurSaisi = e.keyCode.toString();
-     calculer(valeurSaisi);
-  };
+function ecouterClavier(e) {
+    let valeurSaisi = e.key;
+
+    // Normaliser certaines touches
+    if (valeurSaisi === '=' || valeurSaisi === 'Enter') {
+        valeurSaisi = 'Enter';
+    } else if (valeurSaisi === 'Escape' || valeurSaisi === 'Backspace' || valeurSaisi.toLowerCase() === 'c') {
+        valeurSaisi = 'c';
+    }
+
+    calculer(valeurSaisi);
+}
   
 // 2 attendre le click de l'utilisateur (ecran);
-
-document.addEventListener('click' , ecouterEcran );
+document.addEventListener('click', ecouterEcran);
 
 function ecouterEcran(e) {
-     const valeurSaisi = e.target.dataset.key;
-     calculer(valeurSaisi); 
+    // S'assurer qu'on a bien cliqué sur un bouton
+    if (e.target.classList.contains('bouton')) {
+        const valeurSaisi = e.target.dataset.key;
+        calculer(valeurSaisi); 
+    }
 }
 
 // calculatrice
-
 function calculer(valeurSaisi) {
-     
-  if(listeClecode.includes(valeurSaisi)){
-     switch(valeurSaisi){
-          case '67' :
-               ecran.textContent = "";
-               break;
-          case '13' :
-            const calcul = eval(ecran.textContent);
-            ecran.textContent = calcul;
-            break;
-          default:
-               const indexClecode = listeClecode.indexOf(valeurSaisi);
-               const touche = touches[indexClecode];
-               ecran.textContent += touche.innerHTML;
-
-               // ecran.textContent = ecran.textContent + touche.innerHTML;
-     }
-  };    
-}
-
-window.addEventListener('error', erreur);
-
-function erreur(e){
-
-     alert("une erreur est survenue dans votre calcul : " + " " + e.message);
-
+    if (listeClecode.includes(valeurSaisi)) {
+        switch (valeurSaisi) {
+            case 'c':
+                ecran.textContent = "0";
+                break;
+            case 'Enter':
+                try {
+                    // Évaluation sécurisée via bloc try/catch pour éviter les crash
+                    const calcul = eval(ecran.textContent);
+                    if (calcul === Infinity || Number.isNaN(calcul)) {
+                        ecran.textContent = "Erreur";
+                    } else if (calcul !== undefined) {
+                        ecran.textContent = calcul;
+                    } else {
+                        ecran.textContent = "0";
+                    }
+                } catch (error) {
+                    ecran.textContent = "Erreur";
+                }
+                break;
+            default:
+                // Si l'écran affiche 0 (au début) ou une Erreur, on remplace le contenu. Sinon on concatène.
+                if (ecran.textContent === "0" || ecran.textContent === "Erreur") {
+                    ecran.textContent = valeurSaisi;
+                } else {
+                    ecran.textContent += valeurSaisi;
+                }
+        }
+    }    
 }
